@@ -839,3 +839,40 @@ background:radial-gradient(circle at 50% 48%,rgba(255,250,253,.95) 0 8%,rgba(255
   color:var(--muted);
   font-size:12px
 }
+
+
+/* ===== 寄信動畫修正 ===== */
+.mail-stage{perspective:900px}
+.mail-paper{
+  transform-origin:center center;
+  will-change:transform,opacity,clip-path;
+  transition:
+    transform .9s cubic-bezier(.22,.75,.2,1),
+    opacity .55s ease,
+    clip-path .9s ease;
+}
+.mail-paper.folded{
+  transform:translateY(188px) scale(.72,.24);
+  clip-path:inset(0 0 72% 0 round 12px);
+  opacity:0;
+}
+.mail-envelope{
+  overflow:visible;
+}
+.mail-envelope-flap{
+  transform:rotateX(0deg);
+  transform-origin:50% 0%;
+  backface-visibility:hidden;
+  z-index:7;
+}
+.mail-envelope.closed .mail-envelope-flap{
+  transform:rotateX(180deg);
+}
+.mail-envelope.sealed .mail-seal{
+  animation:sealStamp .42s cubic-bezier(.2,.9,.2,1.35) both;
+}
+@keyframes sealStamp{
+  0%{opacity:0;transform:scale(1.8) translateY(-8px)}
+  60%{opacity:1;transform:scale(.86) translateY(2px)}
+  100%{opacity:1;transform:scale(1) translateY(0)}
+}

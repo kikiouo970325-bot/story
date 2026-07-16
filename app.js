@@ -301,11 +301,6 @@ form.addEventListener("submit", async event => {
   }
 
   const checkedCount = checks.filter(item => item.checked).length;
-  if (checkedCount !== checks.length) {
-    sendStatus.textContent = "還有小約定沒有確認完成喔。";
-    sendStatus.classList.add("error");
-    return;
-  }
 
   agreeButton.disabled = true;
   sendStatus.classList.remove("error");
@@ -316,13 +311,34 @@ form.addEventListener("submit", async event => {
   const message = document.getElementById("message").value.trim();
   const displayDate = memoryDate ? memoryDate.replaceAll("-", "/") : "未填寫";
 
+
+  const selectedPromises = checks
+    .filter(item => item.checked)
+    .map(item => {
+      const label = item.closest("label")?.innerText?.trim();
+      return label || item.value || "一個小約定";
+    });
+
+  const selectedPromiseText = selectedPromises.length
+    ? selectedPromises.map(text => `🤍 ${text}`).join("\n")
+    : "今天沒有特別勾選約定，但還是留下了一封信。";
+
   const webhookPayload = {
     username: `${nickname || "寶寶"}寄來了一封信`,
     embeds: [{
       title: `💌 ${nickname || "寶寶"}寄來了一封信`,
       description:
-        `**To：穆雪**\n\n` +
-        `> ${message || "今天沒有留下文字，但他按下了「我願意」。"}\n\n` +
+        `**To：穆雪**
+
+` +
+        `🌸 **今天願意的小約定**
+${selectedPromiseText}
+
+` +
+        `💌 **想說的話**
+> ${message || "今天沒有留下文字，但他按下了「我願意」。"}
+
+` +
         `**From：${nickname || "寶寶"}**`,
       color: 0xD96B8B,
       fields: [
