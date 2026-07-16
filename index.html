@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6c8d4">
+<title>Our Future｜屬於我們的小儀式</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="petals"></div>
+
+<div id="topBookmark" class="top-bookmark hidden" aria-live="polite">
+  <div id="bookmarkHeart" class="bookmark-heart">♥</div>
+  <div class="bookmark-copy">
+    <strong id="bookmarkCount">偷偷收集幸福中……</strong>
+    <small id="bookmarkSub">0 / 35</small>
+  </div>
+  <div class="bookmark-track"><span id="bookmarkFill"></span></div>
+</div>
+
+
+
+<section id="intro" class="intro">
+  <div class="intro-sky" aria-hidden="true">
+    <span class="intro-star s1">✦</span>
+    <span class="intro-star s2">✧</span>
+    <span class="intro-star s3">✦</span>
+    <span class="intro-star s4">♡</span>
+    <span class="intro-star s5">✧</span>
+    <span class="intro-moon"></span>
+    <span class="intro-cloud cloud-a"></span>
+    <span class="intro-cloud cloud-b"></span>
+    <span class="light-beam"></span>
+  </div>
+
+  <div class="prologue-frame">
+    <span class="corner corner-tl">❦</span>
+    <span class="corner corner-tr">❦</span>
+    <span class="corner corner-bl">❦</span>
+    <span class="corner corner-br">❦</span>
+
+    <div class="prologue-rule"><span>✦</span></div>
+    <p class="prologue-label intro-line">PROLOGUE</p>
+    <h1 class="future-script intro-line">Our Future</h1>
+    <p class="future-sub intro-line">Before we begin.</p>
+
+    <div class="prologue-letter intro-line">
+      <span class="tiny-heart">♡</span>
+      <h2>給寶寶的一封信</h2>
+      <p><strong>寶寶，</strong></p>
+      <p>在告訴大家之前，</p>
+      <p>我想先和你，好好確認一次。</p>
+      <p>確認我們都願意，<br>一起走向同一個未來。</p>
+      <p>所以……<br><strong>我們開始吧。</strong></p>
+      <p class="letter-signature">— 穆雪</p>
+    </div>
+
+    <button id="introBtn" class="open-letter-btn intro-line">
+      <span>♡</span> 我們開始吧 <span>♡</span>
+    </button>
+
+    <p class="made-for intro-line">Designed with love, only for my baby.</p>
+    <div class="prologue-rule bottom-rule"><span>♡</span></div>
+  </div>
+</section>
+
+
+<section id="cover" class="cover screen">
+  <div class="cover-card">
+    <div class="sparkles">✦ ♡ ✦</div>
+    <div id="envelope" class="envelope">
+      <div class="env-back"></div>
+      <div class="env-paper"><div>To：寶寶 ♡<br><small>From：穆雪</small><br><b style="font-size:25px">♥</b></div></div>
+      <div class="env-front"></div>
+      <div class="wax">♥</div>
+    </div>
+    <h1>屬於我們的小儀式</h1>
+    <p>在正式告訴大家以前，<br>陪我一起完成屬於我們的小約定。</p>
+    <button id="openBook" class="primary">開始閱讀</button>
+    <span class="micro">女朋友很認真做的，不可以笑我喔。</span>
+  </div>
+</section>
+
+<main id="book" class="book hidden">
+  <header class="hero">
+    <span class="badge">OUR FUTURE</span>
+    <h1>屬於我們的小約定</h1>
+    <p>沒有標準答案，只要照著你的心確認就好了。</p>
+    <div class="hearts-count">
+      <div id="heartsRow" class="hearts-row">♡ ♡ ♡ ♡ ♡</div>
+      <strong id="countText">目前收集到 0 顆愛心</strong>
+      <div class="progress-track"><div id="bar" class="progress-bar"></div></div>
+    </div>
+  </header>
+
+  <form id="form">
+    <section class="chapter">
+      <div class="heading"><span class="no">01</span><div><small>FIRST CHAPTER</small><h2>官宣確認</h2></div></div>
+      <p class="quote">「喜歡不是一時衝動，而是一次又一次選擇站在彼此身邊。」</p>
+      <div class="items" data-items='[
+["💖","我確認我們目前是正式交往關係"],
+["🎀","我同意公開我們的戀愛關係"],
+["🩷","我同意在社群平台／群組官宣"],
+["💌","我確認可以標註我的帳號（@）"],
+["✨","我確認可以使用情侶稱呼（寶寶／甜心）"],
+["🌸","我知道官宣後，親友可能會知道我們的關係"],
+["❗","我確認官宣內容已閱讀，沒有問題"],
+["❕","若有想修改的地方，我會在官宣前提出"],
+["💚","以上內容皆已確認，同意正式官宣"],
+["🌷","我已閱讀以上內容，並同意自此正式對外公開我們的戀愛關係"]
+]'></div>
+    </section>
+
+    <section class="chapter">
+      <div class="heading"><span class="no">02</span><div><small>THINK CAREFULLY</small><h2>好好想一下喔～</h2></div></div>
+      <p class="quote">「我們不是要求完美，而是認真地選擇一段長久的關係。」</p>
+      <div class="items" data-items='[
+["💍","我確認我們是以結婚／長久交往為前提交往"],
+["🤍","我確認沒有任何人強迫我"],
+["🌙","若日後想調整公開範圍，願意先和對方討論"]
+]'></div>
+    </section>
+
+    <section class="chapter">
+      <div class="heading"><span class="no">03</span><div><small>OUR PROMISE</small><h2>共同遵守條約</h2></div></div>
+      <p class="quote">「好的感情，不是沒有爭吵，而是願意一起把問題解決。」</p>
+      <div class="items" data-items='[
+["💬","有問題先溝通，不冷戰、不失聯"],
+["🌙","不會帶著情緒過夜"],
+["🫶","不隨意翻舊帳，願意一起解決問題"],
+["🏡","尊重彼此的生活、工作與朋友圈"],
+["💔","不因小事輕易說分手"],
+["🔐","尊重彼此的界線與隱私"],
+["🌧️","有情緒時，不以任何形式做人身攻擊"],
+["🌱","願意一起成長，而不是要求對方完美"]
+]'></div>
+    </section>
+
+    <section class="chapter">
+      <div class="heading"><span class="no">04</span><div><small>LOVE VOW</small><h2>戀愛誓言</h2></div></div>
+      <p class="quote">「愛不是只承諾今天，而是期待和你一起經過每一個明天。」</p>
+      <div class="items" data-items='[
+["🛤️","我願意一起經歷未來的每一段旅程"],
+["❤️","我願意把我們放在心上，而不是把勝負放在前面"],
+["🌟","我願意尊重你的選擇與夢想"],
+["🫂","我願意在開心時分享，也願意在難過時陪伴"],
+["💭","我願意坦誠溝通，而不是猜測彼此"]
+]'></div>
+    </section>
+
+    <section class="chapter">
+      <div class="heading"><span class="no">05</span><div><small>PLEASE REMEMBER</small><h2>注意事項</h2></div></div>
+      <p class="quote">「官宣不是故事的終點，而是我們願意一起努力的開始。」</p>
+      <div class="items" data-items='[
+["🌷","尊重彼此的家人、朋友與生活"],
+["🕊️","官宣後仍保有彼此的個人空間"],
+["☎️","發生誤會時，以當面解決（若條件可）或通話溝通為優先；可以文字回覆，但不要拒絕溝通，除非不允許除外"],
+["📖","若有重大決定，希望彼此先討論"],
+["❣️","官宣不代表完美，而代表我們願意一起努力"]
+]'></div>
+    </section>
+
+    <section class="chapter">
+      <div class="heading"><span class="no">06</span><div><small>FINAL CONFIRMATION</small><h2>最後，讓我們一起確認</h2></div></div>
+      <div class="items" data-items='[
+["⭕","我已閱讀以上所有內容"],
+["🐾","我願意與你一起經營這段感情"],
+["💞","我了解官宣代表我們願意對外承認彼此的身分"],
+["💖","我確認今天，完全正式成為你的另一半"]
+]'></div>
+
+      <div class="signature">
+        <h3>一起把今天留下來吧</h3><p class="signature-intro">你的名字、日期，還有此刻想對我說的話，我都想好好記住。</p>
+        <label class="field"><span>留下你的名字或暱稱</span><input id="name" required placeholder="例如：寶寶"></label>
+        <label class="field"><span>有什麼想對我說的話？</span><textarea id="message" placeholder="想說什麼都可以，我會很認真地看。…"></textarea></label>
+        <label class="field"><span>我們想記住的日子</span><input id="date" type="date" required></label>
+        <button id="agreeButton" class="final-btn" type="submit">♡ 我願意 ♡</button>
+        <p id="sendStatus" class="send-status" aria-live="polite"></p>
+        <p class="hint">確認完所有約定，再按下「我願意」。後面的畫面，只屬於我們。</p>
+      </div>
+    </section>
+  </form>
+
+  <section class="museum">
+    <div class="museum-icon">📔</div>
+    <h2>我們的小小紀念館</h2>
+    <p>現在還空空的沒關係。<br>以後，我們會一起把照片、日期和每一段回憶慢慢放進來。</p>
+    <span class="locked">🔒 我們的回憶，之後慢慢收藏</span>
+  </section>
+</main>
+
+<nav id="bottom" class="bottom hidden">
+  <button id="prev">‹<small>上一章</small></button>
+  <button id="center" class="center">0%<small>戀愛默契</small></button>
+  <button id="next">›<small>下一章</small></button>
+</nav>
+
+
+<div class="rotate"><div class="rotate-card"><div class="rotate-icon">📱</div><h2>請轉回直式</h2><p>這封情書用直式看會更漂亮喔。</p></div></div>
+
+<section id="cinematicEnding" class="cinematic-ending" aria-hidden="true">
+  <div class="ending-sky" aria-hidden="true">
+    <span class="ending-moon"></span>
+    <span class="ending-star es1">✦</span>
+    <span class="ending-star es2">✧</span>
+    <span class="ending-star es3">✦</span>
+    <span class="ending-star es4">♡</span>
+    <span class="ending-star es5">✧</span>
+    <span class="ending-haze haze-a"></span>
+    <span class="ending-haze haze-b"></span>
+  </div>
+  <div class="ending-stage">
+    <div id="endingSpeech" class="ending-speech" aria-live="polite"></div>
+    <button id="endingHug" class="ending-hug" type="button">
+      <span class="hug-face">(⁠づ⁠￣⁠ ³⁠￣⁠)⁠づ</span>
+      <small>抱抱我吧 ♡</small>
+    </button>
+    <div id="endingFinalCard" class="ending-final-card">
+      <div class="ending-rule"><span>♡</span></div>
+      <h2>寶寶永遠愛你 ♡</h2>
+      <p>從今天開始，我們一起走下去。</p>
+      <div class="ending-rule"><span>✦</span></div>
+      <span class="ending-title">Our Future</span>
+      <button id="openMemories" class="open-memories" type="button" form="none">♡ 一起看看我們的回憶</button>
+    </div>
+  </div>
+  <div id="endingBloom" class="ending-bloom" aria-hidden="true">
+    <span>♥</span><span>♡</span><span>♥</span><span>♡</span>
+    <span>♥</span><span>♡</span><span>♥</span><span>♡</span>
+  </div>
+</section>
+
+<section id="memoriesScene" class="memories-scene" aria-hidden="true">
+  <div class="memories-sky" aria-hidden="true">
+    <span class="memories-moon"></span>
+    <span class="memories-star ms1">✦</span>
+    <span class="memories-star ms2">✧</span>
+    <span class="memories-star ms3">♡</span>
+    <span class="memories-star ms4">✦</span>
+  </div>
+
+  <div class="memory-book">
+    <button id="closeMemories" class="memory-close" type="button" aria-label="回到最後一頁">×</button>
+
+    <div class="memory-book-header">
+      <small>OUR MEMORIES</small>
+      <h2>我們的回憶</h2>
+      <p>故事還在繼續，這裡會慢慢被我們填滿。</p>
+    </div>
+
+    <div class="memory-page">
+      <div class="memory-photo-placeholder">
+        <span class="memory-camera">📷</span>
+        <strong>第一張照片的位置</strong>
+        <p>留給下一次約會。</p>
+      </div>
+
+      <div class="memory-note">
+        <span>2026 / 07 / 16</span>
+        <h3>故事的第一頁</h3>
+        <p>現在還沒有很多回憶沒關係。<br>以後，我們會一起把照片、日期和每一段故事慢慢放進來。</p>
+      </div>
+    </div>
+
+    <div class="memory-footer">
+      <button type="button" class="memory-nav" disabled>‹</button>
+      <span>1 / 1</span>
+      <button type="button" class="memory-nav" disabled>›</button>
+    </div>
+
+    
+<div class="memory-editor">
+  <button id="addMemoryButton" class="add-memory-button" type="button">＋ 新增回憶</button>
+
+  <form id="memoryForm" class="memory-form" hidden>
+    <label>
+      <span>選擇照片</span>
+      <input id="memoryImage" type="file" accept="image/*">
+    </label>
+
+    <label>
+      <span>日期</span>
+      <input id="memoryDateInput" type="date" required>
+    </label>
+
+    <label>
+      <span>標題</span>
+      <input id="memoryTitleInput" type="text" maxlength="40" placeholder="例如：第一次約會" required>
+    </label>
+
+    <label>
+      <span>想記下的話</span>
+      <textarea id="memoryTextInput" rows="4" maxlength="300" placeholder="寫下這段回憶…" required></textarea>
+    </label>
+
+    <div class="memory-form-actions">
+      <button id="cancelMemoryButton" type="button" class="memory-secondary-button">取消</button>
+      <button type="submit" class="memory-save-button">儲存回憶 ♡</button>
+    </div>
+
+    <p id="memorySaveStatus" class="memory-save-status" aria-live="polite"></p>
+  </form>
+</div>
+
+<div id="memoryList" class="memory-list"></div>
+
+<p class="memory-coming-soon">回憶會保存在這支手機裡 ♡</p>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="mailScene" class="mail-scene" aria-hidden="true">
+  <div class="mail-stage">
+    <div id="mailPaper" class="mail-paper">
+      <div class="mail-paper-inner">
+        <small>TO：穆雪</small>
+        <p id="mailPreviewText">我有一些話想交給你。</p>
+        <span id="mailPreviewFrom">FROM：寶寶</span>
+      </div>
+    </div>
+    <div id="mailEnvelope" class="mail-envelope">
+      <div class="mail-envelope-back"></div>
+      <div class="mail-envelope-front"></div>
+      <div class="mail-envelope-flap"></div>
+      <div class="mail-seal">♥</div>
+    </div>
+    <p id="mailStatusText" class="mail-status-text">正在摺好這封信……</p>
+  </div>
+</section>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
