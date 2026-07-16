@@ -305,6 +305,16 @@
 
 <div id="memoryList" class="memory-list"></div>
 
+
+<div class="memory-backup-panel">
+  <button id="exportMemoriesButton" type="button" class="memory-backup-button">匯出回憶備份</button>
+  <label class="memory-backup-button memory-import-label">
+    匯入回憶備份
+    <input id="importMemoriesInput" type="file" accept="application/json,.json" hidden>
+  </label>
+  <p id="memoryBackupStatus" class="memory-backup-status" aria-live="polite"></p>
+</div>
+
 <p class="memory-coming-soon">回憶會保存在這支手機裡 ♡</p>
   </div>
 </section>

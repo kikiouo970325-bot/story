@@ -502,3 +502,148 @@ memoryList.addEventListener("click",event=>{
 });
 
 renderMemories();
+
+
+
+// ===== Our Future：自動記憶與備份 =====
+const OF_STORAGE = {
+  checks: "ourfuture_checks_v1",
+  nickname: "ourfuture_nickname_v1",
+  date: "ourfuture_date_v1",
+  message: "ourfuture_message_v1"
+};
+
+function safeParseJson(value, fallback){
+  try{
+    return value ? JSON.parse(value) : fallback;
+  }catch{
+    return fallback;
+  }
+}
+
+function restoreOurFutureState(){
+  const savedChecks = safeParseJson(localStorage.getItem(OF_STORAGE.checks), []);
+  checks.forEach((checkbox, index)=>{
+    checkbox.checked = Boolean(savedChecks[index]);
+  });
+
+  const nameInput = document.getElementById("name");
+  const dateInput = document.getElementById("date");
+  const messageInput = document.getElementById("message");
+
+  if(nameInput){
+    nameInput.value = localStorage.getItem(OF_STORAGE.nickname) || nameInput.value || "";
+  }
+
+  if(dateInput){
+    const savedDate = localStorage.getItem(OF_STORAGE.date);
+    if(savedDate){
+      dateInput.value = savedDate;
+    }else if(!dateInput.value){
+      dateInput.value = new Date().toISOString().slice(0,10);
+    }
+  }
+
+  if(messageInput){
+    messageInput.value = localStorage.getItem(OF_STORAGE.message) || "";
+  }
+
+  if(typeof update === "function"){
+    update();
+  }
+}
+
+checks.forEach((checkbox)=>{
+  checkbox.addEventListener("change",()=>{
+    localStorage.setItem(
+      OF_STORAGE.checks,
+      JSON.stringify(checks.map(item=>item.checked))
+    );
+  });
+});
+
+const rememberedNameInput = document.getElementById("name");
+const rememberedDateInput = document.getElementById("date");
+const rememberedMessageInput = document.getElementById("message");
+
+rememberedNameInput?.addEventListener("input",()=>{
+  localStorage.setItem(OF_STORAGE.nickname, rememberedNameInput.value);
+});
+
+rememberedDateInput?.addEventListener("change",()=>{
+  localStorage.setItem(OF_STORAGE.date, rememberedDateInput.value);
+});
+
+rememberedMessageInput?.addEventListener("input",()=>{
+  localStorage.setItem(OF_STORAGE.message, rememberedMessageInput.value);
+});
+
+const exportMemoriesButton = document.getElementById("exportMemoriesButton");
+const importMemoriesInput = document.getElementById("importMemoriesInput");
+const memoryBackupStatus = document.getElementById("memoryBackupStatus");
+
+exportMemoriesButton?.addEventListener("click",()=>{
+  const backup = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    memories: getSavedMemories(),
+    checks: safeParseJson(localStorage.getItem(OF_STORAGE.checks), []),
+    nickname: localStorage.getItem(OF_STORAGE.nickname) || "",
+    date: localStorage.getItem(OF_STORAGE.date) || "",
+    message: localStorage.getItem(OF_STORAGE.message) || ""
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    {type:"application/json"}
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `our-future-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+
+  if(memoryBackupStatus){
+    memoryBackupStatus.textContent = "備份檔已匯出，記得留在安全的位置 ♡";
+  }
+});
+
+importMemoriesInput?.addEventListener("change",async()=>{
+  const file = importMemoriesInput.files?.[0];
+  if(!file) return;
+
+  try{
+    const backup = JSON.parse(await file.text());
+
+    if(!backup || !Array.isArray(backup.memories)){
+      throw new Error("備份格式不正確");
+    }
+
+    saveMemories(backup.memories);
+    localStorage.setItem(OF_STORAGE.checks, JSON.stringify(backup.checks || []));
+    localStorage.setItem(OF_STORAGE.nickname, backup.nickname || "");
+    localStorage.setItem(OF_STORAGE.date, backup.date || "");
+    localStorage.setItem(OF_STORAGE.message, backup.message || "");
+
+    restoreOurFutureState();
+    renderMemories();
+
+    if(memoryBackupStatus){
+      memoryBackupStatus.textContent = "回憶已經還原回來了 ♡";
+    }
+  }catch(error){
+    console.error(error);
+    if(memoryBackupStatus){
+      memoryBackupStatus.textContent = "這個備份檔無法讀取，請確認檔案是否正確。";
+    }
+  }finally{
+    importMemoriesInput.value = "";
+  }
+});
+
+restoreOurFutureState();
+

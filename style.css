@@ -806,3 +806,36 @@ background:radial-gradient(circle at 50% 48%,rgba(255,250,253,.95) 0 8%,rgba(255
 .mail-envelope-flap{position:absolute;left:0;right:0;top:0;height:54%;clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(180deg,#efc2d0,#d58da7);transform-origin:top;transition:transform .65s ease;z-index:5}.mail-envelope.closed .mail-envelope-flap{transform:rotateX(180deg)}
 .mail-seal{position:absolute;left:50%;top:47%;width:48px;height:48px;margin:-24px;border-radius:50%;display:grid;place-items:center;color:#fff4f7;background:linear-gradient(145deg,#c74770,#8f274e);box-shadow:0 8px 18px rgba(88,30,48,.32);opacity:0;transform:scale(.4);transition:opacity .35s ease,transform .35s ease;z-index:6}.mail-envelope.sealed .mail-seal{opacity:1;transform:scale(1)}
 .mail-status-text{position:absolute;bottom:22px;margin:0;color:#f4dbe4;font-family:Georgia,"Microsoft JhengHei",serif;font-size:18px;letter-spacing:.04em;text-align:center;white-space:pre-line;opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease}.mail-status-text.visible{opacity:1;transform:none}
+
+
+.memory-backup-panel{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid rgba(145,51,79,.12)
+}
+.memory-backup-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:10px 16px;
+  border:1px solid rgba(145,51,79,.16);
+  border-radius:999px;
+  color:var(--deep);
+  background:#fff0f4;
+  font-size:13px;
+  cursor:pointer
+}
+.memory-backup-button:active{transform:scale(.97)}
+.memory-backup-status{
+  width:100%;
+  min-height:18px;
+  margin:0;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px
+}
