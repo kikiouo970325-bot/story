@@ -18,20 +18,33 @@ function setMailStatus(text){
 async function playMailAnimation(nickname,message){
   mailPreviewText.textContent=message||"今天沒有留下文字，但我按下了「我願意」。";
   mailPreviewFrom.textContent=`FROM：${nickname||"寶寶"}`;
+
   mailScene.classList.add("show");
+  mailScene.setAttribute("aria-hidden","false");
   mailPaper.classList.remove("folded");
   mailEnvelope.classList.remove("show","closed","sealed");
+  mailStatusText.classList.remove("visible");
+
   setMailStatus("正在摺好這封信……");
-  await mailWait(1100);
-  mailPaper.classList.add("folded");
+  await mailWait(900);
+
+  // 信封先出現並保持打開。
   mailEnvelope.classList.add("show");
-  await mailWait(850);
-  mailEnvelope.classList.add("closed");
+  await mailWait(420);
+
+  // 信紙完整縮小並滑進信封。
+  mailPaper.classList.add("folded");
+  await mailWait(1150);
+
+  // 等信紙完全消失後，才關上信封上蓋。
   setMailStatus("正在封好這封信……");
-  await mailWait(800);
+  mailEnvelope.classList.add("closed");
+  await mailWait(850);
+
+  // 最後蓋上火漆。
   mailEnvelope.classList.add("sealed");
   setMailStatus("正在寄給穆雪……");
-  await mailWait(900);
+  await mailWait(950);
 }
 
 async function finishMailAnimation(){
@@ -68,7 +81,7 @@ document.querySelectorAll(".items").forEach(box=>{
   const arr=JSON.parse(box.dataset.items);
   box.innerHTML=arr.map(([icon,text])=>`
     <label class="item">
-      <input type="checkbox" required>
+      <input type="checkbox">
       <span class="icon">${icon}</span>
       <span class="copy">${text}</span>
       <span class="check"></span>
@@ -663,3 +676,10 @@ importMemoriesInput?.addEventListener("change",async()=>{
 
 restoreOurFutureState();
 
+
+
+// Our Future 3.0: all announcement choices are optional.
+document.querySelectorAll('input[type="checkbox"]').forEach(item => {
+  item.required = false;
+  item.removeAttribute('required');
+});
