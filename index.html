@@ -251,16 +251,16 @@
     </div>
 
     <div class="memory-page">
-      <div class="memory-photo-placeholder">
+      <div id="featuredMemoryPhoto" class="memory-photo-placeholder">
         <span class="memory-camera">📷</span>
         <strong>第一張照片的位置</strong>
         <p>留給下一次約會。</p>
       </div>
 
       <div class="memory-note">
-        <span>2026 / 07 / 16</span>
-        <h3>故事的第一頁</h3>
-        <p>現在還沒有很多回憶沒關係。<br>以後，我們會一起把照片、日期和每一段故事慢慢放進來。</p>
+        <span id="featuredMemoryDate">新增回憶後顯示日期</span>
+        <h3 id="featuredMemoryTitle">故事的第一頁</h3>
+        <p id="featuredMemoryText">現在還沒有很多回憶沒關係。<br>以後，我們會一起把照片、日期和每一段故事慢慢放進來。</p>
       </div>
     </div>
 
@@ -283,6 +283,11 @@
     <label>
       <span>日期</span>
       <input id="memoryDateInput" type="date" required>
+    </label>
+
+    <label>
+      <span>時間</span>
+      <input id="memoryTimeInput" type="time">
     </label>
 
     <label>
@@ -316,7 +321,7 @@
   <p id="memoryBackupStatus" class="memory-backup-status" aria-live="polite"></p>
 </div>
 
-<p class="memory-coming-soon">回憶會保存在這支手機裡 ♡</p>
+<p id="memorySyncStatus" class="memory-coming-soon">正在同步回憶…</p>
   </div>
 </section>
 

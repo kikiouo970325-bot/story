@@ -285,6 +285,7 @@ const closeMemories=document.getElementById("closeMemories");
 openMemories.addEventListener("click",()=>{
   memoriesScene.classList.add("show");
   memoriesScene.setAttribute("aria-hidden","false");
+  loadMemories().then(renderMemories);
 
   requestAnimationFrame(()=>{
     cinematicEnding.classList.remove("show");
@@ -398,12 +399,19 @@ const memoryForm=document.getElementById("memoryForm");
 const cancelMemoryButton=document.getElementById("cancelMemoryButton");
 const memoryImage=document.getElementById("memoryImage");
 const memoryDateInput=document.getElementById("memoryDateInput");
+const memoryTimeInput=document.getElementById("memoryTimeInput");
 const memoryTitleInput=document.getElementById("memoryTitleInput");
 const memoryTextInput=document.getElementById("memoryTextInput");
 const memorySaveStatus=document.getElementById("memorySaveStatus");
 const memoryList=document.getElementById("memoryList");
+const featuredMemoryPhoto=document.getElementById("featuredMemoryPhoto");
+const featuredMemoryDate=document.getElementById("featuredMemoryDate");
+const featuredMemoryTitle=document.getElementById("featuredMemoryTitle");
+const featuredMemoryText=document.getElementById("featuredMemoryText");
+const memorySyncStatus=document.getElementById("memorySyncStatus");
 
 const MEMORY_STORAGE_KEY="ourFutureMemories";
+const MEMORY_SYNC_CONFIG=window.OUR_FUTURE_CONFIG?.memorySync||{};
 
 function getSavedMemories(){
   try{
@@ -417,6 +425,101 @@ function saveMemories(memories){
   localStorage.setItem(MEMORY_STORAGE_KEY,JSON.stringify(memories));
 }
 
+function normalizeMemories(value){
+  const source=Array.isArray(value) ? value : [];
+  return source
+    .filter(memory=>memory&&typeof memory==="object")
+    .map(memory=>({
+      id:String(memory.id||Date.now()),
+      date:String(memory.date||""),
+      time:String(memory.time||""),
+      title:String(memory.title||""),
+      text:String(memory.text||""),
+      imageData:String(memory.imageData||"")
+    }));
+}
+
+function setMemorySyncStatus(text,isError=false){
+  if(!memorySyncStatus) return;
+  memorySyncStatus.textContent=text;
+  memorySyncStatus.classList.toggle("error",isError);
+}
+
+function formatMemoryDateTime(memory){
+  const dateText=memory.date ? memory.date.replaceAll("-"," / ") : "沒有日期";
+  return memory.time ? `${dateText}  ${memory.time}` : dateText;
+}
+
+async function fetchRemoteMemories(){
+  if(!MEMORY_SYNC_CONFIG.endpoint){
+    return null;
+  }
+
+  const response=await fetch(MEMORY_SYNC_CONFIG.endpoint,{cache:"no-store"});
+  if(!response.ok){
+    throw new Error(`Memory sync GET ${response.status}`);
+  }
+
+  const payload=await response.json();
+  return normalizeMemories(Array.isArray(payload) ? payload : payload.memories);
+}
+
+async function pushRemoteMemories(memories){
+  if(!MEMORY_SYNC_CONFIG.endpoint){
+    return false;
+  }
+
+  const response=await fetch(MEMORY_SYNC_CONFIG.endpoint,{
+    method:MEMORY_SYNC_CONFIG.method||"PUT",
+    headers:{
+      "Content-Type":"application/json",
+      ...(MEMORY_SYNC_CONFIG.headers||{})
+    },
+    body:JSON.stringify({memories})
+  });
+
+  if(!response.ok){
+    throw new Error(`Memory sync save ${response.status}`);
+  }
+
+  return true;
+}
+
+async function loadMemories(){
+  if(!MEMORY_SYNC_CONFIG.endpoint){
+    const localMemories=normalizeMemories(getSavedMemories());
+    saveMemories(localMemories);
+    setMemorySyncStatus("回憶保存在這個瀏覽器；設定同步端點後會變成所有設備同步。");
+    return localMemories;
+  }
+
+  try{
+    const remoteMemories=await fetchRemoteMemories();
+    saveMemories(remoteMemories);
+    setMemorySyncStatus("回憶已同步到所有設備。");
+    return remoteMemories;
+  }catch(error){
+    console.error(error);
+    setMemorySyncStatus("同步失敗，先顯示這台裝置上的回憶。",true);
+    return normalizeMemories(getSavedMemories());
+  }
+}
+
+async function persistMemories(memories){
+  const normalized=normalizeMemories(memories);
+  saveMemories(normalized);
+
+  try{
+    const synced=await pushRemoteMemories(normalized);
+    setMemorySyncStatus(synced ? "回憶已同步到所有設備。" : "回憶保存在這個瀏覽器；設定同步端點後會變成所有設備同步。");
+  }catch(error){
+    console.error(error);
+    setMemorySyncStatus("同步失敗，已先保存在這台裝置。",true);
+  }
+
+  return normalized;
+}
+
 function escapeMemoryText(value){
   return String(value)
     .replaceAll("&","&amp;")
@@ -426,7 +529,24 @@ function escapeMemoryText(value){
 }
 
 function renderMemories(){
-  const memories=getSavedMemories();
+  const memories=normalizeMemories(getSavedMemories());
+  const featured=memories[0];
+
+  if(featured){
+    featuredMemoryPhoto.className=`memory-photo-placeholder has-memory${featured.imageData?" has-image":""}`;
+    featuredMemoryPhoto.innerHTML=featured.imageData
+      ? `<img src="${featured.imageData}" alt="${escapeMemoryText(featured.title)}">`
+      : `<span class="memory-camera">📷</span><strong>${escapeMemoryText(featured.title)}</strong><p>這一頁還沒有照片。</p>`;
+    featuredMemoryDate.textContent=formatMemoryDateTime(featured);
+    featuredMemoryTitle.textContent=featured.title||"故事的第一頁";
+    featuredMemoryText.textContent=featured.text||"";
+  }else{
+    featuredMemoryPhoto.className="memory-photo-placeholder";
+    featuredMemoryPhoto.innerHTML='<span class="memory-camera">📷</span><strong>第一張照片的位置</strong><p>留給下一次約會。</p>';
+    featuredMemoryDate.textContent="新增回憶後顯示日期";
+    featuredMemoryTitle.textContent="故事的第一頁";
+    featuredMemoryText.innerHTML="現在還沒有很多回憶沒關係。<br>以後，我們會一起把照片、日期和每一段故事慢慢放進來。";
+  }
 
   if(!memories.length){
     memoryList.innerHTML="";
@@ -442,7 +562,7 @@ function renderMemories(){
       <article class="saved-memory-card ${memory.imageData?"":"no-image"}">
         ${imageMarkup}
         <div class="saved-memory-content">
-          <time>${escapeMemoryText(memory.date.replaceAll("-"," / "))}</time>
+          <time>${escapeMemoryText(formatMemoryDateTime(memory))}</time>
           <h4>${escapeMemoryText(memory.title)}</h4>
           <p>${escapeMemoryText(memory.text)}</p>
           <div class="saved-memory-actions">
@@ -477,6 +597,10 @@ addMemoryButton.addEventListener("click",()=>{
   if(!memoryDateInput.value){
     memoryDateInput.value=new Date().toISOString().slice(0,10);
   }
+
+  if(memoryTimeInput&&!memoryTimeInput.value){
+    memoryTimeInput.value=new Date().toTimeString().slice(0,5);
+  }
 });
 
 cancelMemoryButton.addEventListener("click",()=>{
@@ -499,16 +623,17 @@ memoryForm.addEventListener("submit",async event=>{
   try{
     const imageData=await readImageAsDataUrl(memoryImage.files[0]);
 
-    const memories=getSavedMemories();
+    const memories=normalizeMemories(getSavedMemories());
     memories.unshift({
       id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),
       date:memoryDateInput.value,
+      time:memoryTimeInput?.value||"",
       title:memoryTitleInput.value.trim(),
       text:memoryTextInput.value.trim(),
       imageData
     });
 
-    saveMemories(memories);
+    await persistMemories(memories);
     renderMemories();
 
     memoryForm.reset();
@@ -525,12 +650,20 @@ memoryList.addEventListener("click",event=>{
   const button=event.target.closest(".delete-memory-button");
   if(!button) return;
 
-  const memories=getSavedMemories().filter(memory=>memory.id!==button.dataset.memoryId);
-  saveMemories(memories);
+  const memories=normalizeMemories(getSavedMemories()).filter(memory=>memory.id!==button.dataset.memoryId);
+  persistMemories(memories);
   renderMemories();
 });
 
-renderMemories();
+loadMemories().then(renderMemories);
+
+if(MEMORY_SYNC_CONFIG.endpoint){
+  setInterval(()=>{
+    if(memoriesScene.classList.contains("show")){
+      loadMemories().then(renderMemories);
+    }
+  },20000);
+}
 
 
 
@@ -615,7 +748,7 @@ exportMemoriesButton?.addEventListener("click",()=>{
   const backup = {
     version: 1,
     exportedAt: new Date().toISOString(),
-    memories: getSavedMemories(),
+    memories: normalizeMemories(getSavedMemories()),
     checks: safeParseJson(localStorage.getItem(OF_STORAGE.checks), []),
     nickname: localStorage.getItem(OF_STORAGE.nickname) || "",
     date: localStorage.getItem(OF_STORAGE.date) || "",
@@ -652,7 +785,7 @@ importMemoriesInput?.addEventListener("change",async()=>{
       throw new Error("備份格式不正確");
     }
 
-    saveMemories(backup.memories);
+    await persistMemories(backup.memories);
     localStorage.setItem(OF_STORAGE.checks, JSON.stringify(backup.checks || []));
     localStorage.setItem(OF_STORAGE.nickname, backup.nickname || "");
     localStorage.setItem(OF_STORAGE.date, backup.date || "");
